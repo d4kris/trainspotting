@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class Station extends Component {
   render() {
     return (
-      <h2>{this.props.name}</h2>
+      <span>{this.props.name}</span>
     )
   }
 }

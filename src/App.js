@@ -4,10 +4,12 @@ import './App.css';
 import {store} from './store.js';
 import {connect} from 'react-redux';
 import Station from './Station.js';
+import Trains from './Trains.js';
 
 const mapStateToProps = state => ({
   station: state.station,
-  checked: state.checked
+  checked: state.checked,
+  trains: state.trains
 });
 
 class App extends Component {
@@ -24,14 +26,20 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Trainspotting</h1>
         </header>
-        <Station name={this.props.station} />
-        <p className="App-intro">
+        <p className="station-update">
           <input
             type="checkbox"
             checked={!!this.props.checked}
             onClick={onClick}
           /> Update automatically
         </p>
+        <div className="trains">
+          <h2>
+            <span>Trains from </span>
+            <Station name={this.props.station} />
+          </h2>
+          <Trains trains={this.props.trains} />
+        </div>
       </div>
     );
   }
