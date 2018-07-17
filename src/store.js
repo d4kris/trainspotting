@@ -37,13 +37,20 @@ const defaultState = {
   }]
 };
 
+export const actions = {
+  TOGGLE: 'TOGGLE',
+  UPDATE: 'UPDATE',
+  SHOW_PICKER: 'SHOW_PICKER',
+  TOGGLE_PICKER: 'TOGGLE_PICKER',
+  SELECT_STATION: 'SELECT_STATION'
+};
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'TOGGLE': return {...state, checked: !state.checked };
-    case 'UPDATE': return {...state, update: true };
-    case 'SHOW_PICKER': return {...state, showPicker: true };
-    case 'TOGGLE_PICKER': return {...state, showPicker: !state.showPicker };
-    case 'SELECT_STATION': return {...state, station: action.station, showPicker: false };
+    case actions.TOGGLE: return {...state, checked: !state.checked };
+    case actions.UPDATE: return {...state, update: true };
+    case actions.SHOW_PICKER: return {...state, showPicker: true };
+    case actions.TOGGLE_PICKER: return {...state, showPicker: !state.showPicker };
+    case actions.SELECT_STATION: return {...state, station: action.id, showPicker: false };
     default: return state;
   }
 };

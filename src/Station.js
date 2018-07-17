@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store} from './store.js';
+import {store, actions} from './store.js';
 
 const mapStateToProps = state => ({
   selected: state.station,
@@ -13,10 +13,11 @@ const Stations = (props) => {
     return <span onClick={props.togglePicker}>Change</span>
   }
   return (
-    <select className="stations-list">
+    <select className="stations-list" onChange={props.selectStation}>
       {props.list.map(item => {
         return (
-          <option key={item.id} value={item.id}>
+          <option key={item.id} value={item.id}
+          selected={item.id === props.selected}>
             {item.name}
             </option>
         );
@@ -33,7 +34,11 @@ class Station extends Component {
   }
 
   togglePicker() {
-    store.dispatch({ type: 'TOGGLE_PICKER' });
+    store.dispatch({ type: actions.TOGGLE_PICKER });
+  }
+
+  selectStation(event) {
+    store.dispatch({ type: actions.SELECT_STATION, id: event.target.value });
   }
 
   render() {
@@ -41,8 +46,11 @@ class Station extends Component {
       <div>
         <span onClick={this.togglePicker}>{this.stationName()}</span>
         <Stations list={this.props.stations}
+                  selected={this.props.selected}
                   showPicker={this.props.showPicker}
-                  togglePicker={this.togglePicker}/>
+                  togglePicker={this.togglePicker}
+                  selectStation={this.selectStation}
+        />
       </div>
     )
   }
