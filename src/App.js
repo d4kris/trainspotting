@@ -7,9 +7,7 @@ import Station from './Station.js';
 import Trains from './Trains.js';
 
 const mapStateToProps = state => ({
-  station: state.station,
-  checked: state.checked,
-  trains: state.trains
+  checked: state.checked
 });
 
 class App extends Component {
@@ -36,9 +34,9 @@ class App extends Component {
         <div className="trains">
           <h2>
             <span>Trains from </span>
-            <Station name={this.props.station} />
+            <Station />
           </h2>
-          <Trains trains={this.props.trains} />
+          <Trains />
         </div>
       </div>
     );

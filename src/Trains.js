@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state => ({
+  trains: state.trains
+});
 
 class Trains extends Component {
   render() {
@@ -29,4 +34,4 @@ class Trains extends Component {
   }
 }
 
-export default Trains;
+export default connect(mapStateToProps, () => ({}))(Trains);
