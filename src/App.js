@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {store} from './store.js';
-import {connect} from 'react-redux';
+import {defaultState} from './store.js';
 import Station from './Station.js';
 import Trains from './Trains.js';
 
-const mapStateToProps = state => ({
-  station: state.station,
-  checked: state.checked,
-  trains: state.trains
-});
 
 class App extends Component {
+  state = defaultState;
 
   render() {
     const onClick = () => {
       console.log('Toggle check');
-      store.dispatch({ type: 'TOGGLE' })
+      this.setState({ checked: !this.state.checked })
     };
 
     return (
@@ -29,20 +24,20 @@ class App extends Component {
         <p className="station-update">
           <input
             type="checkbox"
-            checked={!!this.props.checked}
+            checked={!!this.state.checked}
             onClick={onClick}
           /> Update automatically
         </p>
         <div className="trains">
           <h2>
             <span>Trains from </span>
-            <Station name={this.props.station} />
+            <Station name={this.state.station} />
           </h2>
-          <Trains trains={this.props.trains} />
+          <Trains trains={this.state.trains} />
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, () => ({}) )(App);
+export default App;
