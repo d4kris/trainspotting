@@ -1,6 +1,17 @@
 export const defaultState = {
-  station: 'Kungsbacka',
+  station: 'kba',
   checked: false,
+  showPicker: false,
+  stations: [{
+    id: 'gbg',
+    name: 'Göteborg'
+  },{
+    id: 'kba',
+    name: 'Kungsbacka'
+  },{
+    id: 'hde',
+    name: 'Hede'
+  }],
   trains: [{
     id: '1',
     name: 'Öresundståg',

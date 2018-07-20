@@ -31,7 +31,8 @@ class App extends Component {
         <div className="trains">
           <h2>
             <span>Trains from </span>
-            <Station name={this.state.station} />
+            <Station selected={this.state.station} stations={this.state.stations}
+                   showPicker={this.state.showPicker} />
           </h2>
           <Trains trains={this.state.trains} />
         </div>
