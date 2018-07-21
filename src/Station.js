@@ -42,17 +42,22 @@ class Station extends Component {
   }
 
   render() {
+    if (!this.props.showPicker) {
+      return <span onClick={this.togglePicker}>{this.stationName()}</span>
+    }
     return (
-      <div>
-        <span onClick={this.togglePicker}>{this.stationName()}</span>
-        <Stations list={this.props.stations}
-                  selected={this.props.selected}
-                  showPicker={this.props.showPicker}
-                  togglePicker={this.togglePicker}
-                  selectStation={this.selectStation}
-        />
-      </div>
-    )
+      <select className="stations-list"
+              value={this.props.selected}
+              onChange={this.selectStation}>
+        {this.props.stations.map(station => {
+          return (
+            <option key={station.id} value={station.id}>
+              {station.name}
+            </option>
+          );
+        })}
+      </select>
+    );
   }
 }
 
