@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {store} from './store.js';
-import {connect} from 'react-redux';
+import { store, actions } from './store.js';
+import { connect } from 'react-redux';
 import Station from './Station.js';
-import Trains from './Trains.js';
+import Trains from './Trains';
+import agent from './agent';
 
 const mapStateToProps = state => ({
-  checked: state.checked
+  checked: state.checked,
+  joke: state.joke
+});
+
+const mapDispatchToProps = dispatch => ({
+  onLoad: (payload) => dispatch({ type: actions.APP_LOAD, payload })
 });
 
 class App extends Component {
 
+  componentDidMount() {
+    console.log('Did mount app');
+    this.props.onLoad(agent.Jokes.geek())
+  }
+
   render() {
     const onClick = () => {
       console.log('Toggle check');
-      store.dispatch({ type: 'TOGGLE' })
+      store.dispatch({ type: actions.TOGGLE })
     };
 
     return (
@@ -23,6 +34,7 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Trainspotting</h1>
+          <p>{this.props.joke}</p>
         </header>
         <p className="station-update">
           <input
@@ -43,4 +55,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, () => ({}) )(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

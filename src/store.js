@@ -1,4 +1,5 @@
-import {createStore} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { promiseMiddleware } from "./middleware";
 
 const defaultState = {
   station: 'kba',
@@ -42,10 +43,12 @@ export const actions = {
   UPDATE: 'UPDATE',
   SHOW_PICKER: 'SHOW_PICKER',
   TOGGLE_PICKER: 'TOGGLE_PICKER',
-  SELECT_STATION: 'SELECT_STATION'
+  SELECT_STATION: 'SELECT_STATION',
+  APP_LOAD: 'APP_LOAD'
 };
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
+    case actions.APP_LOAD: return {...state, joke: action.payload };
     case actions.TOGGLE: return {...state, checked: !state.checked };
     case actions.UPDATE: return {...state, update: true };
     case actions.SHOW_PICKER: return {...state, showPicker: true };
@@ -56,4 +59,4 @@ const reducer = (state = defaultState, action) => {
 };
 
 
-export const store = createStore(reducer);
+export const store = createStore(reducer, applyMiddleware(promiseMiddleware));
