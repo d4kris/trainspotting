@@ -9,32 +9,11 @@ const defaultState = {
     id: 'gbg',
     name: 'Göteborg'
   },{
-    id: 'kba',
+    id: 'Kb',
     name: 'Kungsbacka'
   },{
     id: 'hde',
     name: 'Hede'
-  }],
-  trains: [{
-    id: '1',
-    name: 'Öresundståg',
-    time: '08:15'
-  },{
-    id: '2',
-    name: 'Västtrafik',
-    time: '08:19'
-  },{
-    id: '3',
-    name: 'Västtrafik',
-    time: '08:36'
-  },{
-    id: '4',
-    name: 'Öresundståg',
-    time: '08:45'
-  },{
-    id: '5',
-    name: 'Västtrafik',
-    time: '08:49'
   }]
 };
 
@@ -44,11 +23,13 @@ export const actions = {
   SHOW_PICKER: 'SHOW_PICKER',
   TOGGLE_PICKER: 'TOGGLE_PICKER',
   SELECT_STATION: 'SELECT_STATION',
-  APP_LOAD: 'APP_LOAD'
+  TRAIN_LOAD: 'TRAIN_LOAD',
+  JOKE_LOAD: 'JOKE_LOAD'
 };
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case actions.APP_LOAD: return {...state, joke: action.payload };
+    case actions.JOKE_LOAD: return {...state, joke: action.payload };
+    case actions.TRAIN_LOAD: return {...state, trains: action.payload };
     case actions.TOGGLE: return {...state, checked: !state.checked };
     case actions.UPDATE: return {...state, update: true };
     case actions.SHOW_PICKER: return {...state, showPicker: true };

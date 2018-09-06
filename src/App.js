@@ -13,14 +13,20 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onLoad: (payload) => dispatch({ type: actions.APP_LOAD, payload })
+  onLoad: (payload) => {
+    return dispatch({ type: actions.JOKE_LOAD, payload })
+  },
+  onTrainsLoad: (payload) => {
+    return dispatch({ type: actions.TRAIN_LOAD, payload })
+  }
 });
 
 class App extends Component {
 
   componentDidMount() {
     console.log('Did mount app');
-    this.props.onLoad(agent.Jokes.geek())
+    this.props.onLoad(agent.Jokes.dad())
+    this.props.onTrainsLoad(agent.Trains.all())
   }
 
   render() {
