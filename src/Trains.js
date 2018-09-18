@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { format } from './utils.js';
 
 const mapStateToProps = state => ({
   trains: state.trains
@@ -24,7 +25,7 @@ class Trains extends Component {
             return (
               <tr key={train.id}>
                 <td className="trains-name">{train.name}</td>
-                <td className="trains-time">{train.time}</td>
+                <td className="trains-time">{format.dateToTimeString(train.time)}</td>
               </tr>
             )
           })}

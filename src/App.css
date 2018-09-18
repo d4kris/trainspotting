@@ -26,14 +26,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-.trains {
-    display: flex;
-    flex-direction: column;
-}
 .trains-list {
-    flex: 1 1 auto;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 .trains-name {
     text-align: start;
+    padding: 5px;
 }
