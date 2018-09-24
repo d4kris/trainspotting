@@ -35,3 +35,10 @@
     text-align: start;
     padding: 5px;
 }
+.oldTime {
+    color: red;
+    font-style: italic;
+}
+.estTime {
+    min-height: 1em;
+}

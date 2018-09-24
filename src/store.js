@@ -1,20 +1,25 @@
 import { createStore, applyMiddleware } from 'redux';
 import { promiseMiddleware } from "./middleware";
 
+export const stations = [{
+  id: 'G',
+  name: 'Göteborg'
+},{
+  id: 'Kb',
+  name: 'Kungsbacka'
+},{
+  id: 'hde',
+  name: 'Hede'
+},{
+  id: 'Mdn',
+  name: 'Mölndal'
+}];
+
 const defaultState = {
   station: 'kba',
   checked: false,
   showPicker: false,
-  stations: [{
-    id: 'gbg',
-    name: 'Göteborg'
-  },{
-    id: 'Kb',
-    name: 'Kungsbacka'
-  },{
-    id: 'hde',
-    name: 'Hede'
-  }]
+  stations: stations
 };
 
 export const actions = {

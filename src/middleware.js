@@ -7,7 +7,7 @@ const promiseMiddleware = store => next => action => {
       },
       error => {
         action.error = true;
-        action.payload = error.response.body;
+        action.payload = error.response && error.response.body;
         store.dispatch(action);
       }
     );

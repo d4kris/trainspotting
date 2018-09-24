@@ -1,5 +1,6 @@
 import superAgentPromise from 'superagent-promise';
 import _superagent from 'superagent';
+import { stationName } from './utils';
 
 const superagent = superAgentPromise(_superagent, global.Promise);
 
@@ -54,11 +55,14 @@ const Trains = {
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(res => {
         return res.body.RESPONSE.RESULT[0].TrainAnnouncement.map(t => {
+          const to = t.ToLocation && t.ToLocation[0];
+          const toStation = stationName(to && to.LocationName);
           return {
             id: t.ActivityId,
             name: t.ProductInformation[0],
+            to: toStation,
             time: t.AdvertisedTimeAtLocation,
-            actualTime: t.TimeAtLocation
+            estTime: t.EstimatedTimeAtLocation
           }
         });
       });

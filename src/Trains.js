@@ -24,8 +24,11 @@ class Trains extends Component {
           {this.props.trains.map(train => {
             return (
               <tr key={train.id}>
-                <td className="trains-name">{train.name}</td>
-                <td className="trains-time">{format.dateToTimeString(train.time)}</td>
+                <td className="trains-name">
+                  <div>{train.name}</div>
+                  <div>{train.to}</div>
+                </td>
+                  <TrainTime train={train}/>
               </tr>
             )
           })}
@@ -33,6 +36,28 @@ class Trains extends Component {
         </table>
     )
   }
+}
+
+/**
+ * Helper to show time and when applicable estimated time
+ * @param props
+ * @constructor
+ */
+const TrainTime = (props) => {
+  if (props.train.estTime) {
+    return (
+      <td className="trains-time">
+        <div className="oldTime">{format.dateToTimeString(props.train.time)}</div>
+        <div className="estTime">{format.dateToTimeString(props.train.estTime)}</div>
+      </td>
+    )
+  }
+  return (
+    <td className="trains-time">
+      <div>{format.dateToTimeString(props.train.time)}</div>
+      <div className="estTime"></div>
+    </td>
+  )
 }
 
 export default connect(mapStateToProps, () => ({}))(Trains);
