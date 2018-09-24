@@ -35,10 +35,12 @@
     text-align: start;
     padding: 5px;
 }
-.oldTime {
-    color: red;
-    font-style: italic;
-}
 .estTime {
+    color: red;
+}
+.oldTime {
+    text-decoration: line-through;
+}
+.realTime {
     min-height: 1em;
 }

@@ -38,15 +38,19 @@ const Trains = {
       '\t\t\tobjecttype="TrainAnnouncement">\n' +
       '\t\t<FILTER>\n' +
       '\t\t\t<AND>\n' +
-      '\t\t\t\t<EQ name="LocationSignature" value="Kb"/>\n' +
+      '\t\t\t\t<EQ name="LocationSignature" value="G"/>\n' +
       '\t\t\t\t<EQ name="Advertised" value="true"/>\n' +
       '\t\t\t\t<EQ name="ActivityType" value="Avgang"/>\n' +
       '\t\t\t\t<OR>\n' +
       '\t\t\t\t\t<AND>\n' +
       '\t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>\n' +
-      '\t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(14:00:00)"/>\n' +
+      '\t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>\n' +
       '\t\t\t\t\t</AND>\n' +
-      '\t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:05:00)"/>\n' +
+      '\t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>\n' +
+      '\t\t\t\t</OR>\n' +
+      '\t\t\t\t<OR>\n' +
+      '\t\t\t\t\t<EQ name="ToLocation.LocationName" value="Kb"/>\n' +
+      '\t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="Kb"/>\n' +
       '\t\t\t\t</OR>\n' +
       '\t\t\t</AND>\n' +
       '\t\t</FILTER>\n' +
@@ -62,6 +66,7 @@ const Trains = {
             name: t.ProductInformation[0],
             to: toStation,
             time: t.AdvertisedTimeAtLocation,
+            realTime: t.TimeAtLocation,
             estTime: t.EstimatedTimeAtLocation
           }
         });

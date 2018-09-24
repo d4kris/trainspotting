@@ -39,7 +39,7 @@ class Trains extends Component {
 }
 
 /**
- * Helper to show time and when applicable estimated time
+ * Helper to show time and when applicable estimated or real time
  * @param props
  * @constructor
  */
@@ -52,10 +52,18 @@ const TrainTime = (props) => {
       </td>
     )
   }
+  if (props.train.realTime) {
+    return (
+      <td className="trains-time">
+        <div className="oldTime">{format.dateToTimeString(props.train.time)}</div>
+        <div className="realTime">{format.dateToTimeString(props.train.realTime)}</div>
+      </td>
+    )
+  }
   return (
     <td className="trains-time">
       <div>{format.dateToTimeString(props.train.time)}</div>
-      <div className="estTime"></div>
+      <div className="realTime"></div>
     </td>
   )
 }
