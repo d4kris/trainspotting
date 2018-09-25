@@ -30,7 +30,9 @@
 .station-name {
     cursor: pointer;
 }
-
+.station-to {
+    cursor: pointer;
+}
 
 .trains-list {
     text-align: center;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { store, actions } from './store.js';
+import { actions } from './store.js';
 import { connect } from 'react-redux';
 import Station from './Station.js';
 import Trains from './Trains';
@@ -24,7 +24,8 @@ const mapDispatchToProps = dispatch => ({
   },
   toggle: () => {
     return dispatch({ type: actions.TOGGLE });
-  }
+  },
+  reverseTrip: () => dispatch({ type: actions.REVERSE_TO_FROM })
 });
 
 class App extends Component {
@@ -58,7 +59,7 @@ class App extends Component {
           <h2>
             <span>Trains from </span>
             <Station action={actions.SELECT_FROM} />
-            <span> to </span>
+            <span className="station-to" onClick={this.props.reverseTrip}> to </span>
             <Station action={actions.SELECT_TO} />
           </h2>
           <Trains />

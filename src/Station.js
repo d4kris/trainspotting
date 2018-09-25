@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {store, actions} from './store.js';
-import agent from './agent';
+import {actions} from './store.js';
 
 const mapStateToProps = (state, props) => ({
   selected: (props.action === actions.SELECT_FROM) ? state.fromStation : state.toStation,
