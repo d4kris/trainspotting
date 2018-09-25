@@ -16,7 +16,8 @@ export const stations = [{
 }];
 
 const defaultState = {
-  station: 'kba',
+  fromStation: 'Kb',
+  toStation: 'G',
   checked: false,
   showPicker: false,
   stations: stations
@@ -27,7 +28,8 @@ export const actions = {
   UPDATE: 'UPDATE',
   SHOW_PICKER: 'SHOW_PICKER',
   TOGGLE_PICKER: 'TOGGLE_PICKER',
-  SELECT_STATION: 'SELECT_STATION',
+  SELECT_FROM: 'SELECT_FROM_STATION',
+  SELECT_TO: 'SELECT_TO_STATION',
   TRAIN_LOAD: 'TRAIN_LOAD',
   JOKE_LOAD: 'JOKE_LOAD'
 };
@@ -39,7 +41,8 @@ const reducer = (state = defaultState, action) => {
     case actions.UPDATE: return {...state, update: true };
     case actions.SHOW_PICKER: return {...state, showPicker: true };
     case actions.TOGGLE_PICKER: return {...state, showPicker: !state.showPicker };
-    case actions.SELECT_STATION: return {...state, station: action.id, showPicker: false };
+    case actions.SELECT_FROM: return {...state, fromStation: action.id, showPicker: false };
+    case actions.SELECT_TO: return {...state, toStation: action.id, showPicker: false };
     default: return state;
   }
 };

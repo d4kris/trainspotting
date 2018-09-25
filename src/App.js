@@ -9,7 +9,10 @@ import agent from './agent';
 
 const mapStateToProps = state => ({
   checked: state.checked,
-  joke: state.joke
+  joke: state.joke,
+  fromStation: state.fromStation,
+  toStation: state.toStation,
+  stations: state.stations
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -52,7 +55,9 @@ class App extends Component {
         <div className="trains">
           <h2>
             <span>Trains from </span>
-            <Station />
+            <Station action={actions.SELECT_FROM} />
+            <span> to </span>
+            <Station action={actions.SELECT_TO} />
           </h2>
           <Trains />
         </div>

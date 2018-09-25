@@ -26,6 +26,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.station-name {
+    cursor: pointer;
+}
+
+
 .trains-list {
     text-align: center;
     margin-left: auto;

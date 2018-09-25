@@ -28,9 +28,49 @@ const requests = {
   }
 };
 
+const trainResponse = res => {
+  return res.body.RESPONSE.RESULT[0].TrainAnnouncement.map(t => {
+    const to = t.ToLocation && t.ToLocation[0];
+    const toStation = stationName(to && to.LocationName);
+    return {
+      id: t.ActivityId,
+      name: t.ProductInformation[0],
+      to: toStation,
+      time: t.AdvertisedTimeAtLocation,
+      realTime: t.TimeAtLocation,
+      estTime: t.EstimatedTimeAtLocation
+    }
+  });
+};
+
 //TODO robustify, handle errors
 const Trains = {
-  all: () => {
+  all: (from = 'G') => {
+    const queryXml = `<?xml version="1.0"?>\n
+      <REQUEST>\n
+      \t<LOGIN authenticationkey="***REMOVED***"/>\n
+      \t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+      \t\t\tobjecttype="TrainAnnouncement">\n
+      \t\t<FILTER>\n
+      \t\t\t<AND>\n
+      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>\n
+      \t\t\t\t<EQ name="Advertised" value="true"/>\n
+      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>\n
+      t\t\t\t<OR>\n
+      \t\t\t\t\t<AND>\n
+      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>\n
+      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>\n
+      \t\t\t\t\t</AND>\n
+      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>\n
+      \t\t\t\t</OR>\n
+      \t\t\t</AND>\n
+      \t\t</FILTER>\n
+      \t</QUERY>\n
+      </REQUEST>`;
+    return requests.postXml(TRAINS_API_ROOT, queryXml)
+      .then(trainResponse);
+  },
+  station: (from, to) => {
     const queryXml = '<?xml version="1.0"?>\n' +
       '<REQUEST>\n' +
       '\t<LOGIN authenticationkey="***REMOVED***"/>\n' +
@@ -38,7 +78,7 @@ const Trains = {
       '\t\t\tobjecttype="TrainAnnouncement">\n' +
       '\t\t<FILTER>\n' +
       '\t\t\t<AND>\n' +
-      '\t\t\t\t<EQ name="LocationSignature" value="G"/>\n' +
+      '\t\t\t\t<EQ name="LocationSignature" value="'+from+'"/>\n' +
       '\t\t\t\t<EQ name="Advertised" value="true"/>\n' +
       '\t\t\t\t<EQ name="ActivityType" value="Avgang"/>\n' +
       '\t\t\t\t<OR>\n' +
@@ -49,30 +89,16 @@ const Trains = {
       '\t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>\n' +
       '\t\t\t\t</OR>\n' +
       '\t\t\t\t<OR>\n' +
-      '\t\t\t\t\t<EQ name="ToLocation.LocationName" value="Kb"/>\n' +
-      '\t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="Kb"/>\n' +
+      '\t\t\t\t\t<EQ name="ToLocation.LocationName" value="'+to+'"/>\n' +
+      '\t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="'+to+'"/>\n' +
       '\t\t\t\t</OR>\n' +
       '\t\t\t</AND>\n' +
       '\t\t</FILTER>\n' +
       '\t</QUERY>\n' +
       '</REQUEST>';
     return requests.postXml(TRAINS_API_ROOT, queryXml)
-      .then(res => {
-        return res.body.RESPONSE.RESULT[0].TrainAnnouncement.map(t => {
-          const to = t.ToLocation && t.ToLocation[0];
-          const toStation = stationName(to && to.LocationName);
-          return {
-            id: t.ActivityId,
-            name: t.ProductInformation[0],
-            to: toStation,
-            time: t.AdvertisedTimeAtLocation,
-            realTime: t.TimeAtLocation,
-            estTime: t.EstimatedTimeAtLocation
-          }
-        });
-      });
-  },
-  station: station => requests.postXml(TRAINS_API_ROOT, { station: station })
+      .then(trainResponse);
+  }
 };
 
 const Jokes = {
