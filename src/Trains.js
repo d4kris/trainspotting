@@ -28,7 +28,7 @@ class Trains extends Component {
                   <div>{train.name}</div>
                   <div>{train.to}</div>
                 </td>
-                  <TrainTime train={train}/>
+                <TrainTime train={train}/>
               </tr>
             )
           })}

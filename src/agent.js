@@ -46,56 +46,56 @@ const trainResponse = res => {
 //TODO robustify, handle errors
 const Trains = {
   all: (from = 'G') => {
-    const queryXml = `<?xml version="1.0"?>\n
-      <REQUEST>\n
-      \t<LOGIN authenticationkey="***REMOVED***"/>\n
+    const queryXml = `<?xml version="1.0"?>
+      <REQUEST>
+      \t<LOGIN authenticationkey="***REMOVED***"/>
       \t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
-      \t\t\tobjecttype="TrainAnnouncement">\n
-      \t\t<FILTER>\n
-      \t\t\t<AND>\n
-      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>\n
-      \t\t\t\t<EQ name="Advertised" value="true"/>\n
-      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>\n
-      t\t\t\t<OR>\n
-      \t\t\t\t\t<AND>\n
-      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>\n
-      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>\n
-      \t\t\t\t\t</AND>\n
-      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>\n
-      \t\t\t\t</OR>\n
-      \t\t\t</AND>\n
-      \t\t</FILTER>\n
-      \t</QUERY>\n
+      \t\t\tobjecttype="TrainAnnouncement">
+      \t\t<FILTER>
+      \t\t\t<AND>
+      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>
+      \t\t\t\t<EQ name="Advertised" value="true"/>
+      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>
+      t\t\t\t<OR>
+      \t\t\t\t\t<AND>
+      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+      \t\t\t\t\t</AND>
+      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+      \t\t\t\t</OR>
+      \t\t\t</AND>
+      \t\t</FILTER>
+      \t</QUERY>
       </REQUEST>`;
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(trainResponse);
   },
   station: (from, to) => {
-    const queryXml = '<?xml version="1.0"?>\n' +
-      '<REQUEST>\n' +
-      '\t<LOGIN authenticationkey="***REMOVED***"/>\n' +
-      '\t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation" ' +
-      '\t\t\tobjecttype="TrainAnnouncement">\n' +
-      '\t\t<FILTER>\n' +
-      '\t\t\t<AND>\n' +
-      '\t\t\t\t<EQ name="LocationSignature" value="'+from+'"/>\n' +
-      '\t\t\t\t<EQ name="Advertised" value="true"/>\n' +
-      '\t\t\t\t<EQ name="ActivityType" value="Avgang"/>\n' +
-      '\t\t\t\t<OR>\n' +
-      '\t\t\t\t\t<AND>\n' +
-      '\t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>\n' +
-      '\t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>\n' +
-      '\t\t\t\t\t</AND>\n' +
-      '\t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>\n' +
-      '\t\t\t\t</OR>\n' +
-      '\t\t\t\t<OR>\n' +
-      '\t\t\t\t\t<EQ name="ToLocation.LocationName" value="'+to+'"/>\n' +
-      '\t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="'+to+'"/>\n' +
-      '\t\t\t\t</OR>\n' +
-      '\t\t\t</AND>\n' +
-      '\t\t</FILTER>\n' +
-      '\t</QUERY>\n' +
-      '</REQUEST>';
+    const queryXml = `<?xml version="1.0"?>
+      <REQUEST>
+      \t<LOGIN authenticationkey="***REMOVED***"/>
+      \t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+      \t\t\tobjecttype="TrainAnnouncement">
+      \t\t<FILTER>
+      \t\t\t<AND>
+      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>
+      \t\t\t\t<EQ name="Advertised" value="true"/>
+      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>
+      \t\t\t\t<OR>
+      \t\t\t\t\t<AND>
+      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+      \t\t\t\t\t</AND>
+      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+      \t\t\t\t</OR>
+      \t\t\t\t<OR>
+      \t\t\t\t\t<EQ name="ToLocation.LocationName" value="${to}"/>
+      \t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="${to}"/>
+      \t\t\t\t</OR>
+      \t\t\t</AND>
+      \t\t</FILTER>
+      \t</QUERY>
+      </REQUEST>`;
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(trainResponse);
   }

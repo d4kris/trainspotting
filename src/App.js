@@ -21,23 +21,25 @@ const mapDispatchToProps = dispatch => ({
   },
   onTrainsLoad: (payload) => {
     return dispatch({ type: actions.TRAIN_LOAD, payload })
+  },
+  toggle: () => {
+    return dispatch({ type: actions.TOGGLE });
   }
 });
 
 class App extends Component {
 
   componentDidMount() {
-    console.log('Did mount app');
-    this.props.onLoad(agent.Jokes.dad())
-    this.props.onTrainsLoad(agent.Trains.all())
+    console.log('Did mount app, load joke');
+    this.props.onLoad(agent.Jokes.dad());
+  }
+
+  componentDidUpdate() {
+    console.log('Update');
+    this.props.onTrainsLoad(agent.Trains.station(this.props.fromStation, this.props.toStation));
   }
 
   render() {
-    const onClick = () => {
-      console.log('Toggle check');
-      store.dispatch({ type: actions.TOGGLE })
-    };
-
     return (
       <div className="App">
         <header className="App-header">
@@ -49,7 +51,7 @@ class App extends Component {
           <input
             type="checkbox"
             checked={!!this.props.checked}
-            onClick={onClick}
+            onClick={this.props.toggle}
           /> Update automatically
         </p>
         <div className="trains">
