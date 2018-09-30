@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {actions} from './store.js';
+import { connect } from 'react-redux';
+import {
+  actions,
+  toggleStationPicker,
+  selectStation,
+  trainsLoaded
+} from './actions.js';
 
 const mapStateToProps = (state, props) => ({
   selected: (props.action === actions.SELECT_FROM) ? state.fromStation : state.toStation,
@@ -9,12 +14,12 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
-  togglePicker: () => dispatch({ type: actions.TOGGLE_PICKER }),
+  togglePicker: () => dispatch(toggleStationPicker()),
   selectStation: (event) => {
-    return dispatch({ type: props.action, id: event.target.value });
+    return dispatch(selectStation(props.action, event.target.value));
   },
   onTrainsLoaded: (payload) => {
-    return dispatch({ type: actions.TRAIN_LOAD, payload });
+    return dispatch(trainsLoaded(payload));
   }
 
 });

@@ -45,7 +45,7 @@ const trainResponse = res => {
 
 //TODO robustify, handle errors
 const Trains = {
-  all: (from = 'G') => {
+  getFrom: (from = 'G') => {
     const queryXml = `<?xml version="1.0"?>
       <REQUEST>
       \t<LOGIN authenticationkey="***REMOVED***"/>
@@ -70,7 +70,7 @@ const Trains = {
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(trainResponse);
   },
-  station: (from, to) => {
+  getFromTo: (from, to) => {
     const queryXml = `<?xml version="1.0"?>
       <REQUEST>
       \t<LOGIN authenticationkey="***REMOVED***"/>

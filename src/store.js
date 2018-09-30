@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
-import { promiseMiddleware } from "./middleware";
+import { promiseMiddleware } from './middleware';
+import { actions } from './actions';
 
 export const stations = [{
   id: 'G',
@@ -23,21 +24,12 @@ const defaultState = {
   stations: stations
 };
 
-export const actions = {
-  TOGGLE: 'TOGGLE',
-  UPDATE: 'UPDATE',
-  SHOW_PICKER: 'SHOW_PICKER',
-  TOGGLE_PICKER: 'TOGGLE_PICKER',
-  REVERSE_TO_FROM: 'REVERSE_TO_FROM',
-  SELECT_FROM: 'SELECT_FROM_STATION',
-  SELECT_TO: 'SELECT_TO_STATION',
-  TRAIN_LOAD: 'TRAIN_LOAD',
-  JOKE_LOAD: 'JOKE_LOAD'
-};
-const reducer = (state = defaultState, action) => {
+
+const reducers = (state = defaultState, action) => {
   switch (action.type) {
     case actions.JOKE_LOAD: return {...state, joke: action.payload };
-    case actions.TRAIN_LOAD: return {...state, trains: action.payload };
+    case actions.TRAIN_LOAD: return {...state, trains: [], loading: true };
+    case actions.TRAIN_LOADED: return {...state, trains: action.payload, loading: false };
     case actions.TOGGLE: return {...state, checked: !state.checked };
     case actions.UPDATE: return {...state, update: true };
     case actions.SHOW_PICKER: return {...state, showPicker: true };
@@ -62,4 +54,4 @@ const reducer = (state = defaultState, action) => {
 };
 
 
-export const store = createStore(reducer, applyMiddleware(promiseMiddleware));
+export const store = createStore(reducers, applyMiddleware(promiseMiddleware));
