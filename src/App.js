@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { headerImgs } from './utils';
 import './App.css';
 import { actions, loadJoke, toggleAutoUpdate, reverseToFrom, loadTrains } from './actions.js';
 import { connect } from 'react-redux';
-import Station from './Station.js';
+import Station from './Station';
 import Trains from './Trains';
-import agent from './agent';
 
 const mapStateToProps = state => ({
   checked: state.checked,
@@ -34,13 +33,18 @@ class App extends Component {
     this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
   }
 
+  getHeaderImg() {
+    const ix = +new Date() % 5;
+    return headerImgs[ix];
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Trainspotting</h1>
-          <p>{this.props.joke}</p>
+        <header className="header">
+          <img src={this.getHeaderImg()} className="header-img" alt="trains" />
+          <h1 className="header-title">Trainspotting</h1>
+          <p className="joke">{this.props.joke}</p>
         </header>
         <p className="station-update">
           <input

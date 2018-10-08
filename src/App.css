@@ -2,29 +2,32 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
+.header {
+  background-color: #000;
   height: 150px;
-  padding: 20px;
   color: white;
 }
 
-.App-title {
+.header-img {
+    height: 150px;
+}
+
+.header-title {
   font-size: 1.5em;
+  position: absolute;
+  top: 20px;
+  animation: choo-choo infinite 10s linear;
 }
 
-.App-intro {
-  font-size: large;
+.joke {
+  position: absolute;
+  top: 90px;
+    left: 20px;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes choo-choo {
+  from { left: 90%; }
+  to { left: 0; }
 }
 
 .station-name {
