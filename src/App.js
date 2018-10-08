@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { actions, jokeLoaded, trainsLoaded, toggleAutoUpdate, reverseToFrom } from './actions.js';
+import { actions, loadJoke, toggleAutoUpdate, reverseToFrom, loadTrains } from './actions.js';
 import { connect } from 'react-redux';
 import Station from './Station.js';
 import Trains from './Trains';
@@ -16,8 +16,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  onLoad: (payload) => jokeLoaded(payload),
-  onTrainsLoaded: (payload) => trainsLoaded(payload),
+  onLoad: () => loadJoke(),
+  onTrainsLoad: (from, to) => loadTrains(from, to),
   toggle: () => toggleAutoUpdate(),
   reverseTrip: () => reverseToFrom()
 };
@@ -26,12 +26,12 @@ class App extends Component {
 
   componentDidMount() {
     console.log('Did mount app, load joke');
-    this.props.onLoad(agent.Jokes.dad());
+    this.props.onLoad();
   }
 
   componentDidUpdate() {
-    console.log('Update');
-    this.props.onTrainsLoaded(agent.Trains.getFromTo(this.props.fromStation, this.props.toStation));
+    console.log('Update, load new trains');
+    this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
   }
 
   render() {

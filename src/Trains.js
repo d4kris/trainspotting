@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import { format } from './utils.js';
 
 const mapStateToProps = state => ({
-  trains: state.trains
+  trains: state.trains,
+  isLoading: state.isLoading
 });
 
 class Trains extends Component {
   render() {
-    if (!this.props.trains) {
+    if (this.props.isLoading) {
       return (
         <p>Loading...</p>
       )

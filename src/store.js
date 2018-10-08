@@ -1,5 +1,6 @@
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux';
-import { promiseMiddleware } from './middleware';
 import { actions } from './actions';
 
 export const stations = [{
@@ -14,6 +15,9 @@ export const stations = [{
 },{
   id: 'Mdn',
   name: 'Mölndal'
+},{
+  id: 'Ag',
+  name: 'Anneberg'
 }];
 
 const defaultState = {
@@ -21,15 +25,17 @@ const defaultState = {
   toStation: 'G',
   checked: false,
   showPicker: false,
-  stations: stations
+  stations: stations,
+  isLoading: true
 };
 
 
 const reducers = (state = defaultState, action) => {
   switch (action.type) {
-    case actions.JOKE_LOAD: return {...state, joke: action.payload };
-    case actions.TRAIN_LOAD: return {...state, trains: [], loading: true };
-    case actions.TRAIN_LOADED: return {...state, trains: action.payload, loading: false };
+    case actions.JOKE_LOAD: return {...state, joke: 'Wait for it...' };
+    case actions.JOKE_LOADED: return {...state, joke: action.payload };
+    case actions.TRAIN_LOAD: return {...state, trains: [], isLoading: true };
+    case actions.TRAIN_LOADED: return {...state, trains: action.payload, isLoading: false };
     case actions.TOGGLE: return {...state, checked: !state.checked };
     case actions.UPDATE: return {...state, update: true };
     case actions.SHOW_PICKER: return {...state, showPicker: true };
@@ -53,5 +59,6 @@ const reducers = (state = defaultState, action) => {
   }
 };
 
+const loggerMiddleware = createLogger()
 
-export const store = createStore(reducers, applyMiddleware(promiseMiddleware));
+export const store = createStore(reducers, applyMiddleware(thunkMiddleware, loggerMiddleware));
