@@ -54,7 +54,7 @@ class App extends Component {
           /> Update automatically
         </p>
         <div className="trains">
-          <h2>
+          <h2 className="trains-header">
             <span>Trains from </span>
             <Station action={actions.SELECT_FROM} />
             <span className="station-to" onClick={this.props.reverseTrip}> to </span>

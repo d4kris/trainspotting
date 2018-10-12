@@ -42,13 +42,11 @@ const reducers = (state = defaultState, action) => {
     case actions.TOGGLE_PICKER: return {...state, showPicker: !state.showPicker };
     case actions.REVERSE_TO_FROM: return {...state,
       fromStation: state.toStation,
-      toStation: state.fromStation,
-      trains: null
+      toStation: state.fromStation
     };
     case actions.SELECT_FROM: return {...state,
       fromStation: action.id,
-      showPicker: false,
-      trains: null
+      showPicker: false
     };
     case actions.SELECT_TO: return {...state,
       toStation: action.id,

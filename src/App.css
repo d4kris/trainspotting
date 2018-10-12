@@ -21,15 +21,21 @@
 
 .joke {
   position: absolute;
-  top: 90px;
-    left: 20px;
+  top: 100px;
+  left: 20px;
 }
 
 @keyframes choo-choo {
-  from { left: 90%; }
-  to { left: 0; }
+  from { left: 100%; }
+  to { left: -1em; }
 }
 
+.trains-header {
+    font-size: 1.4em;
+}
+.station-update {
+    display: none;
+}
 .station-name {
     cursor: pointer;
 }
@@ -51,6 +57,7 @@
 }
 .oldTime {
     text-decoration: line-through;
+    color: #CCC;
 }
 .realTime {
     min-height: 1em;
