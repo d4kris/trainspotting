@@ -12,7 +12,9 @@ export const actions = {
   TRAIN_LOAD: 'TRAIN_LOAD',
   TRAIN_LOADED: 'TRAIN_LOADED',
   JOKE_LOAD: 'JOKE_LOAD',
-  JOKE_LOADED: 'JOKE_LOADED'
+  JOKE_LOADED: 'JOKE_LOADED',
+  MSG_LOAD: 'MSG_LOAD',
+  MSG_LOADED: 'MSG_LOADED'
 };
 
 export function jokeLoaded(payload) {
@@ -63,6 +65,24 @@ export function loadTrains(from, to) {
     return agent.Trains.getFromTo(from, to)
       .then(payload => {
           dispatch(trainsLoaded(payload));
+        }
+      );
+  }
+
+}
+export function messagesLoaded(payload) {
+  return { type: actions.MSG_LOADED, payload };
+}
+
+
+export function loadMessages(from, to) {
+  return dispatch => {
+    // set loading
+    dispatch({ type: actions.MSG_LOAD });
+    
+    return agent.Trains.getStationMsg(from, to)
+      .then(payload => {
+          dispatch(messagesLoaded(payload));
         }
       );
   }

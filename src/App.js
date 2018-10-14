@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { headerImgs } from './utils';
 import './App.css';
-import { actions, loadJoke, toggleAutoUpdate, reverseToFrom, loadTrains } from './actions.js';
+import { actions, loadJoke, toggleAutoUpdate, reverseToFrom, loadTrains, loadMessages } from './actions.js';
 import { connect } from 'react-redux';
 import Station from './Station';
 import Trains from './Trains';
@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   onLoad: () => loadJoke(),
   onTrainsLoad: (from, to) => loadTrains(from, to),
+  onMsgLoad: (from, to) => loadMessages(from, to),
   toggle: () => toggleAutoUpdate(),
   reverseTrip: () => reverseToFrom()
 };
@@ -31,6 +32,7 @@ class App extends Component {
   componentDidUpdate() {
     console.log('Update, load new trains');
     this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
+    this.props.onMsgLoad(this.props.fromStation, this.props.toStation);
   }
 
   getHeaderImg() {

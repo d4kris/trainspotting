@@ -53,6 +53,8 @@ const reducers = (state = defaultState, action) => {
       showPicker: false,
       trains: null
     };
+    case actions.MSG_LOAD: return {...state, msgs: [] };
+    case actions.MSG_LOADED: return {...state, msgs: action.payload };
     default: return state;
   }
 };
