@@ -23,11 +23,13 @@
   position: absolute;
   top: 100px;
   left: 20px;
+  animation: choo-choo infinite 10s linear;
+  white-space: nowrap;
 }
 
 @keyframes choo-choo {
   from { left: 100%; }
-  to { left: -1em; }
+  to { left: -10em; }
 }
 
 .trains-header {
