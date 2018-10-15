@@ -75,29 +75,29 @@ const messageResponse = res => {
   });
 };
 
-//TODO remove authkey, robustify, handle errors
+//TODO remove robustify, handle errors
 const Trains = {
   getFrom: (from = 'G') => {
     const queryXml = `<?xml version="1.0"?>
       <REQUEST>
-      \t<LOGIN authenticationkey="${authKey}"/>
-      \t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
-      \t\t\tobjecttype="TrainAnnouncement">
-      \t\t<FILTER>
-      \t\t\t<AND>
-      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>
-      \t\t\t\t<EQ name="Advertised" value="true"/>
-      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>
-      t\t\t\t<OR>
-      \t\t\t\t\t<AND>
-      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
-      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
-      \t\t\t\t\t</AND>
-      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
-      \t\t\t\t</OR>
-      \t\t\t</AND>
-      \t\t</FILTER>
-      \t</QUERY>
+        <LOGIN authenticationkey="${authKey}"/>
+        <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+            objecttype="TrainAnnouncement">
+          <FILTER>
+            <AND>
+              <EQ name="LocationSignature" value="${from}"/>
+              <EQ name="Advertised" value="true"/>
+              <EQ name="ActivityType" value="Avgang"/>
+              <OR>
+                <AND>
+                  <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+                  <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+                </AND>
+                <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+              </OR>
+            </AND>
+          </FILTER>
+        </QUERY>
       </REQUEST>`;
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(trainResponse);
@@ -105,28 +105,28 @@ const Trains = {
   getFromTo: (from, to) => {
     const queryXml = `<?xml version="1.0"?>
       <REQUEST>
-      \t<LOGIN authenticationkey="${authKey}"/>
-      \t<QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
-      \t\t\tobjecttype="TrainAnnouncement">
-      \t\t<FILTER>
-      \t\t\t<AND>
-      \t\t\t\t<EQ name="LocationSignature" value="${from}"/>
-      \t\t\t\t<EQ name="Advertised" value="true"/>
-      \t\t\t\t<EQ name="ActivityType" value="Avgang"/>
-      \t\t\t\t<OR>
-      \t\t\t\t\t<AND>
-      \t\t\t\t\t\t<GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
-      \t\t\t\t\t\t<LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
-      \t\t\t\t\t</AND>
-      \t\t\t\t\t<GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
-      \t\t\t\t</OR>
-      \t\t\t\t<OR>
-      \t\t\t\t\t<EQ name="ToLocation.LocationName" value="${to}"/>
-      \t\t\t\t\t<EQ name="ViaToLocation.LocationName" value="${to}"/>
-      \t\t\t\t</OR>
-      \t\t\t</AND>
-      \t\t</FILTER>
-      \t</QUERY>
+        <LOGIN authenticationkey="${authKey}"/>
+        <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+            objecttype="TrainAnnouncement">
+          <FILTER>
+            <AND>
+              <EQ name="LocationSignature" value="${from}"/>
+              <EQ name="Advertised" value="true"/>
+              <EQ name="ActivityType" value="Avgang"/>
+              <OR>
+                <AND>
+                  <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+                  <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+                </AND>
+                <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+              </OR>
+              <OR>
+                <EQ name="ToLocation.LocationName" value="${to}"/>
+                <EQ name="ViaToLocation.LocationName" value="${to}"/>
+              </OR>
+            </AND>
+          </FILTER>
+      </QUERY>
       </REQUEST>`;
     return requests.postXml(TRAINS_API_ROOT, queryXml)
       .then(trainResponse);

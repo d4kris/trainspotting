@@ -5,19 +5,21 @@ import { actions, loadJoke, toggleAutoUpdate, reverseToFrom, loadTrains, loadMes
 import { connect } from 'react-redux';
 import Station from './Station';
 import Trains from './Trains';
+import Messages from './Messages';
 
 const mapStateToProps = state => ({
   checked: state.checked,
   joke: state.joke,
   fromStation: state.fromStation,
   toStation: state.toStation,
-  stations: state.stations
+  stations: state.stations,
+  msgs: state.msgs,
+  stationChanged: state.stationChanged
 });
 
 const mapDispatchToProps = {
   onLoad: () => loadJoke(),
   onTrainsLoad: (from, to) => loadTrains(from, to),
-  onMsgLoad: (from, to) => loadMessages(from, to),
   toggle: () => toggleAutoUpdate(),
   reverseTrip: () => reverseToFrom()
 };
@@ -25,14 +27,16 @@ const mapDispatchToProps = {
 class App extends Component {
 
   componentDidMount() {
-    console.log('Did mount app, load joke');
+    console.log('Did mount app, load joke and trains GBG-Kba');
     this.props.onLoad();
+    this.props.onTrainsLoad('G', 'Kb');
   }
 
   componentDidUpdate() {
     console.log('Update, load new trains');
-    this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
-    this.props.onMsgLoad(this.props.fromStation, this.props.toStation);
+    if (this.props.stationChanged) {
+      this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
+    }
   }
 
   getHeaderImg() {
@@ -55,6 +59,9 @@ class App extends Component {
             onClick={this.props.toggle}
           /> Update automatically
         </p>
+        <div className="msgs">
+          <Messages />
+        </div>
         <div className="trains">
           <h2 className="trains-header">
             <span>Trains from </span>

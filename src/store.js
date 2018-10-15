@@ -21,12 +21,14 @@ export const stations = [{
 }];
 
 const defaultState = {
-  fromStation: 'Kb',
+  fromStation: 'G',
   toStation: 'G',
   checked: false,
   showPicker: false,
   stations: stations,
-  isLoading: true
+  isLoading: true,
+  msgs: [],
+  stationChanged: false
 };
 
 
@@ -34,7 +36,7 @@ const reducers = (state = defaultState, action) => {
   switch (action.type) {
     case actions.JOKE_LOAD: return {...state, joke: 'Wait for it...' };
     case actions.JOKE_LOADED: return {...state, joke: action.payload };
-    case actions.TRAIN_LOAD: return {...state, trains: [], isLoading: true };
+    case actions.TRAIN_LOAD: return {...state, trains: [], isLoading: true, stationChanged: false };
     case actions.TRAIN_LOADED: return {...state, trains: action.payload, isLoading: false };
     case actions.TOGGLE: return {...state, checked: !state.checked };
     case actions.UPDATE: return {...state, update: true };
@@ -42,16 +44,18 @@ const reducers = (state = defaultState, action) => {
     case actions.TOGGLE_PICKER: return {...state, showPicker: !state.showPicker };
     case actions.REVERSE_TO_FROM: return {...state,
       fromStation: state.toStation,
-      toStation: state.fromStation
+      toStation: state.fromStation,
+      stationChanged: true
     };
     case actions.SELECT_FROM: return {...state,
       fromStation: action.id,
-      showPicker: false
+      showPicker: false, 
+      stationChanged: true
     };
     case actions.SELECT_TO: return {...state,
       toStation: action.id,
       showPicker: false,
-      trains: null
+      stationChanged: true
     };
     case actions.MSG_LOAD: return {...state, msgs: [] };
     case actions.MSG_LOADED: return {...state, msgs: action.payload };

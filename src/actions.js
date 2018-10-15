@@ -62,6 +62,12 @@ export function loadTrains(from, to) {
     // set loading
     dispatch({ type: actions.TRAIN_LOAD });
 
+    agent.Trains.getStationMsg(from, to)
+      .then(payload => {
+          dispatch(messagesLoaded(payload));
+        }
+      );
+
     return agent.Trains.getFromTo(from, to)
       .then(payload => {
           dispatch(trainsLoaded(payload));

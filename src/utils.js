@@ -1,7 +1,7 @@
 import { stations } from './store';
 
 const format = {
-  dateToTimeString: (dateStr) => new Date(dateStr).toLocaleTimeString().substr(0, 5)
+  dateToTimeString: (dateStr) => new Date(dateStr).toLocaleTimeString('sv-SE').substr(0, 5)
 }
 
 const stationName = (id) => {
