@@ -41,14 +41,12 @@ export function toggleStationPicker() {
 export function selectStation(action, stationId) {
   return dispatch => {
     dispatch({ type: action, id: stationId });
-    dispatch({ type: actions.TRAIN_LOAD });
   }
 }
 
 export function reverseToFrom() {
   return dispatch => {
     dispatch({ type: actions.REVERSE_TO_FROM });
-    dispatch({ type: actions.TRAIN_LOAD });
   }
 }
 

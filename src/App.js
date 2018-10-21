@@ -33,8 +33,8 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    console.log('Update, load new trains');
     if (this.props.stationChanged) {
+      console.log('Station update, load new trains ' + this.props.fromStation + ' - ' + this.props.toStation);
       this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
     }
   }

@@ -10,7 +10,7 @@ export const stations = [{
   id: 'Kb',
   name: 'Kungsbacka'
 },{
-  id: 'hde',
+  id: 'Hde',
   name: 'Hede'
 },{
   id: 'Mdn',
@@ -22,7 +22,7 @@ export const stations = [{
 
 const defaultState = {
   fromStation: 'G',
-  toStation: 'G',
+  toStation: 'Kb',
   checked: false,
   showPicker: false,
   stations: stations,
