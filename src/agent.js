@@ -110,7 +110,10 @@ const Trains = {
             objecttype="TrainAnnouncement">
           <FILTER>
             <AND>
-              <EQ name="LocationSignature" value="${from}"/>
+              <OR>
+                <EQ name="LocationSignature" value="${from}"/>
+                <EQ name="ViaToLocation.LocationName" value="${from}"/>
+              </OR>
               <EQ name="Advertised" value="true"/>
               <EQ name="ActivityType" value="Avgang"/>
               <OR>
