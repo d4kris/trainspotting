@@ -10,7 +10,7 @@ export const stations = [{
   id: 'Kb',
   name: 'Kungsbacka'
 },{
-  id: 'Hde',
+  id: 'Khe',
   name: 'Hede'
 },{
   id: 'Mdn',
@@ -18,11 +18,26 @@ export const stations = [{
 },{
   id: 'Ag',
   name: 'Anneberg'
+},{
+  id: 'Ldo',
+  name: 'Lindome'
+},{
+  id: 'Krd',
+  name: 'Kållered'
+},{
+  id: 'Lis',
+  name: 'Liseberg'
+},{
+  id: 'Vb',
+  name: 'Varberg'
+},{
+  id: 'Dk.kh',
+  name: 'Köpenhamn'
 }];
 
 const defaultState = {
   fromStation: 'G',
-  toStation: 'Kb',
+  toStations: ['Kb'],
   checked: false,
   showPicker: false,
   stations: stations,
@@ -43,8 +58,8 @@ const reducers = (state = defaultState, action) => {
     case actions.SHOW_PICKER: return {...state, showPicker: true };
     case actions.TOGGLE_PICKER: return {...state, showPicker: !state.showPicker };
     case actions.REVERSE_TO_FROM: return {...state,
-      fromStation: state.toStation,
-      toStation: state.fromStation,
+      fromStation: state.toStations[0],
+      toStations: [state.fromStation],
       stationChanged: true
     };
     case actions.SELECT_FROM: return {...state,
@@ -52,11 +67,18 @@ const reducers = (state = defaultState, action) => {
       showPicker: false, 
       stationChanged: true
     };
-    case actions.SELECT_TO: return {...state,
-      toStation: action.id,
+    case actions.SELECT_TO: {
+    if (state.toStations.includes(action.id)) {
+      state.toStations = state.toStations.filter(s => s !== action.id);
+    } else {
+      state.toStations.push(action.id);
+    }
+    return {...state,
+      toStations: state.toStations,
       showPicker: false,
       stationChanged: true
     };
+  }
     case actions.MSG_LOAD: return {...state, msgs: [] };
     case actions.MSG_LOADED: return {...state, msgs: action.payload };
     default: return state;

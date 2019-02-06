@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
   checked: state.checked,
   joke: state.joke,
   fromStation: state.fromStation,
-  toStation: state.toStation,
+  toStations: state.toStations,
   stations: state.stations,
   msgs: state.msgs,
   stationChanged: state.stationChanged
@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onLoad: () => loadJoke(),
-  onTrainsLoad: (from, to) => loadTrains(from, to),
+  onTrainsLoad: (from, toList) => loadTrains(from, toList),
   toggle: () => toggleAutoUpdate(),
   reverseTrip: () => reverseToFrom()
 };
@@ -29,13 +29,13 @@ class App extends Component {
   componentDidMount() {
     console.log('Did mount app, load joke and trains GBG-Kba');
     this.props.onLoad();
-    this.props.onTrainsLoad('G', 'Kb');
+    this.props.onTrainsLoad('G', ['Kb']);
   }
 
   componentDidUpdate() {
     if (this.props.stationChanged) {
-      console.log('Station update, load new trains ' + this.props.fromStation + ' - ' + this.props.toStation);
-      this.props.onTrainsLoad(this.props.fromStation, this.props.toStation);
+      console.log('Station update, load new trains ' + this.props.fromStation + ' - ' + this.props.toStations);
+      this.props.onTrainsLoad(this.props.fromStation, this.props.toStations);
     }
   }
 

@@ -50,6 +50,30 @@ const trainResponse = res => {
 };
 
 /**
+ * Parse TrainAnnouncements to train info
+ * @param res
+ * @returns {id: string, name: string, to: string, time: *, realTime: *, estTime: *}[]}
+ */
+const filterTrainResponse = (res, toFilter) => {
+  return res.body.RESPONSE.RESULT[0].TrainAnnouncement.map(t => {
+    const to = t.ToLocation && t.ToLocation[0];
+    const toStation = to && to.LocationName;
+    if (toFilter.includes(toStation)) {
+      return {
+        id: t.ActivityId,
+        name: t.ProductInformation[0],
+        to: stationName(toStation),
+        time: t.AdvertisedTimeAtLocation,
+        realTime: t.TimeAtLocation,
+        estTime: t.EstimatedTimeAtLocation
+      }
+    } else {
+      console.log(`Filter out ${toStation}`)
+    }
+  }).filter(x => x !== undefined);
+};
+
+/**
  * Parse TrainMessages to message info, filter out ...
  * TrafficImpact.FromLocation == from
  * TrafficImpact.ToLocation == to
@@ -76,63 +100,68 @@ const messageResponse = res => {
 };
 
 //TODO remove robustify, handle errors
+const queryFromXml = (from) => `<?xml version="1.0"?>
+<REQUEST>
+  <LOGIN authenticationkey="${authKey}"/>
+  <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+      objecttype="TrainAnnouncement">
+    <FILTER>
+      <AND>
+        <EQ name="LocationSignature" value="${from}"/>
+        <EQ name="Advertised" value="true"/>
+        <EQ name="ActivityType" value="Avgang"/>
+        <OR>
+          <AND>
+            <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+            <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+          </AND>
+          <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+        </OR>
+      </AND>
+    </FILTER>
+  </QUERY>
+</REQUEST>`;
+const queryFromToXml = (from, to) => `<?xml version="1.0"?>
+<REQUEST>
+  <LOGIN authenticationkey="${authKey}"/>
+  <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
+      objecttype="TrainAnnouncement">
+    <FILTER>
+      <AND>
+        <OR>
+          <EQ name="LocationSignature" value="${from}"/>
+          <EQ name="ViaToLocation.LocationName" value="${from}"/>
+        </OR>
+        <EQ name="Advertised" value="true"/>
+        <EQ name="ActivityType" value="Avgang"/>
+        <OR>
+          <AND>
+            <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
+            <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
+          </AND>
+          <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
+        </OR>
+        <OR>
+          <EQ name="ToLocation.LocationName" value="${to}"/>
+          <EQ name="ViaToLocation.LocationName" value="${to}"/>
+        </OR>
+      </AND>
+    </FILTER>
+</QUERY>
+</REQUEST>`;
+
 const Trains = {
   getFrom: (from = 'G') => {
-    const queryXml = `<?xml version="1.0"?>
-      <REQUEST>
-        <LOGIN authenticationkey="${authKey}"/>
-        <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
-            objecttype="TrainAnnouncement">
-          <FILTER>
-            <AND>
-              <EQ name="LocationSignature" value="${from}"/>
-              <EQ name="Advertised" value="true"/>
-              <EQ name="ActivityType" value="Avgang"/>
-              <OR>
-                <AND>
-                  <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
-                  <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
-                </AND>
-                <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
-              </OR>
-            </AND>
-          </FILTER>
-        </QUERY>
-      </REQUEST>`;
-    return requests.postXml(TRAINS_API_ROOT, queryXml)
+    return requests.postXml(TRAINS_API_ROOT, queryFromXml(from))
       .then(trainResponse);
   },
   getFromTo: (from, to) => {
-    const queryXml = `<?xml version="1.0"?>
-      <REQUEST>
-        <LOGIN authenticationkey="${authKey}"/>
-        <QUERY runtime="true" lastmodified="true" orderby="AdvertisedTimeAtLocation"
-            objecttype="TrainAnnouncement">
-          <FILTER>
-            <AND>
-              <OR>
-                <EQ name="LocationSignature" value="${from}"/>
-                <EQ name="ViaToLocation.LocationName" value="${from}"/>
-              </OR>
-              <EQ name="Advertised" value="true"/>
-              <EQ name="ActivityType" value="Avgang"/>
-              <OR>
-                <AND>
-                  <GT name="AdvertisedTimeAtLocation" value="$DateAdd(-00:15:00)"/>
-                  <LT name="AdvertisedTimeAtLocation" value="$DateAdd(01:00:00)"/>
-                </AND>
-                <GT name="EstimatedTimeAtLocation" value="$DateAdd(-00:10:00)"/>
-              </OR>
-              <OR>
-                <EQ name="ToLocation.LocationName" value="${to}"/>
-                <EQ name="ViaToLocation.LocationName" value="${to}"/>
-              </OR>
-            </AND>
-          </FILTER>
-      </QUERY>
-      </REQUEST>`;
-    return requests.postXml(TRAINS_API_ROOT, queryXml)
+    return requests.postXml(TRAINS_API_ROOT, queryFromToXml(from, to))
       .then(trainResponse);
+  },
+  getFiltered: (from, toList) => {
+    return requests.postXml(TRAINS_API_ROOT, queryFromXml(from))
+    .then(response => filterTrainResponse(response, toList))
   },
   getStationMsg: (from, to) => {
     // require both to and from to be in the AffectedLocation list

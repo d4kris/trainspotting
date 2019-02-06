@@ -8,7 +8,7 @@ import {
 } from './actions.js';
 
 const mapStateToProps = (state, props) => ({
-  selected: (props.action === actions.SELECT_FROM) ? state.fromStation : state.toStation,
+  selected: (props.action === actions.SELECT_FROM) ? state.fromStation : state.toStations,
   stations: state.stations,
   showPicker: state.showPicker
 });
@@ -21,28 +21,36 @@ const mapDispatchToProps = (dispatch, props) => ({
   onTrainsLoaded: (payload) => {
     return dispatch(trainsLoaded(payload));
   }
-
 });
 
 class Station extends Component {
 
-  stationName() {
-    const station = this.props.stations.find(s => s.id === this.props.selected);
+  stationName(id) {
+    const station = this.props.stations.find(s => s.id === id);
     return station ? station.name : 'Select station';
+  }
+
+  stationNames() {
+    if (Array.isArray(this.props.selected)) {
+      return this.props.selected.map((s) => this.stationName(s)).join(', ');
+    } else {
+      return this.stationName(this.props.selected);
+    }
   }
   
   render() {
     if (!this.props.showPicker) {
       return (
         <span className="station-name" onClick={this.props.togglePicker}>
-          {this.stationName()}
+          {this.stationNames()}
         </span>
       );
     }
     return (
       <select className="stations-list"
               value={this.props.selected}
-              onChange={this.props.selectStation}>
+              onChange={this.props.selectStation}
+              multiple="true">
         {this.props.stations.map(station => {
           return (
             <option key={station.id} value={station.id}>
