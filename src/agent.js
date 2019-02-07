@@ -199,6 +199,9 @@ const Jokes = {
     .then(res => {
       return res.body.joke;
     })
+    .catch(error => {
+      return `nojoke - ${error}`;
+    })
 };
 
 export default {
